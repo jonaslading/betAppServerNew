@@ -19,7 +19,8 @@ app.configure(function () {
   
   app.use('/bets', expressJwt({secret: secret}));
   
-  app.use(cors());
+  //app.use(cors());
+  //app.options('*', cors());
   app.use(express.bodyParser());
  
   // Testing an JWT implementation ----  ! json() & urlencoded() should be encluded in bodyParser()... !
@@ -30,7 +31,12 @@ app.configure(function () {
   app.use(function(err, req, res, next){
   	if (err.constructor.name === 'UnauthorizedError') {
     	res.send(401, 'Unauthorized User');
-	}
+	  }
+    res.header('Access-Control-Allow-Origin', "*");
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE');
+    res.header('Access-Control-Allow-Headers', 'Content-Type');
+    next();
+
   });
   // --------------------------
 
